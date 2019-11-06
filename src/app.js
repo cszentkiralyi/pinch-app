@@ -47,7 +47,7 @@ const RecentEntriesCard = {
   view: function RecentEntriesCard_view() {
     return htr(
       ["div", {className: STYLES.container},
-       ["div", {className: STYLES.container_header + "text-green-600"},
+       ["div", {className: STYLES.container_header + "text-green-400"},
         "recent entries"],
 
        ["div",
@@ -62,10 +62,6 @@ const RecentEntriesCard = {
         ,
         ["div", {className: "border-none border-b border-gray-300 p-2 ml-2"}, "chipotle"],
         ["div", {className: "border-none border-b border-gray-300 p-2 mr-2"}, "$12.29"]
-        ,
-        ["div", {className: "border-none border-b border-gray-300 p-2 ml-2"}, "chipotle"],
-        ["div", {className: "border-none border-b border-gray-300 p-2 mr-2"}, "$12.29"]
-       
        ],
 
        ["div", {className: "flex mt-2 justify-center items-center"},
