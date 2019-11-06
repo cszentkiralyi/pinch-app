@@ -9,12 +9,6 @@ const NBSP = "\u00a0";
 
 const $ = (sel, node) => (node || document).querySelector(sel);
 
-const htr = function __htr(form) {
-  return (!Array.isArray(form))
-    ? form
-    : m.apply(window, form.slice(0,2).concat(form.slice(2).map(__htr)));
-}
-
 const STYLES = {
   header: "flex bg-green-500 font-weight-600 text-lg text-gray-100 py-4 justify-center shadow-md relative ",
   container_header: "text-lg pb-2 ",
