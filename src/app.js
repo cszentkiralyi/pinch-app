@@ -1,5 +1,6 @@
 import m from "mithril";
 
+import { Ledger } from "./models.js";
 
 
 const LOREM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -47,25 +48,21 @@ const NewEntryCard = {
 };
 
 const RecentEntriesCard = {
-  view: function RecentEntriesCard_view() {
-
+  view: function RecentEntriesCard_view(vnode) {
+    let { list } = vnode.attrs;
+    console.log(list);
     return (
       <div className={STYLES.container}>
         <div className={STYLES.container_header + "text-green-400"}>
           recent entries
         </div>
         <div className="grid" style={{gridTemplateColumns: "3fr 1fr"}}>
-          <div className="border-none border-b border-gray-300 p-2 ml-2">chipotle</div>
-          <div className="border-none border-b border-gray-300 p-2 mr-2">$12.29</div>
-
-          <div className="border-none border-b border-gray-300 p-2 ml-2">chipotle</div>
-          <div className="border-none border-b border-gray-300 p-2 mr-2">$12.29</div>
-
-          <div className="border-none border-b border-gray-300 p-2 ml-2">chipotle</div>
-          <div className="border-none border-b border-gray-300 p-2 mr-2">$12.29</div>
-
-          <div className="border-none border-b border-gray-300 p-2 ml-2">chipotle</div>
-          <div className="border-none border-b border-gray-300 p-2 mr-2">$12.29</div>
+          {list.map(({desc, amt}) => {
+            return m.fragment(null, [
+              (<div className="border-none border-b border-gray-300 p-2 ml-2">{desc}</div>),
+              (<div className="border-none border-b border-gray-300 p-2 mr-2">${amt.toFixed(2)}</div>)
+            ]);
+          })}
         </div>
         <div className="flex mt-2 justify-center items-center">
           <div className={STYLES.button_alt}>more</div>
@@ -76,12 +73,13 @@ const RecentEntriesCard = {
 };
 
 const HomeScreen = {
+  oninit: Ledger.populate,
   view: function HomeScreen_view() {
     return (
       <div className="h-100 bg-gray-100 text-rg font-weight-400">
         <div className={STYLES.header}>pinch</div>
         <NewEntryCard />
-        <RecentEntriesCard />
+        <RecentEntriesCard list={Ledger.entries.slice(0,4)}/>
       </div>
     );
   }
