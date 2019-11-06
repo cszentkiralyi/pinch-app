@@ -26,76 +26,67 @@ const STYLES = {
 
 const NewEntryCard = {
   view: function NewEntryCard_view() {
-    return htr(
-      ["div", {className: STYLES.container},
-       ["div", {className: "relative mb-8"},
-        ["input", {className: STYLES.input + "pl-8", type: "number"}],
-        ["div", {className: "absolute inset-y-0 inset-l-0 ml-2 opacity-20 text-lg flex justify-center items-center"},
-         "$"]],
-       ["div", {className: "mb-8"},
-        ["input", {className: STYLES.input, type: "text", placeholder: "Description"}]],
-       ["div", {className: "flex relative justify-center items-center p-4 mt-8"},
-        NBSP,
-        ["div", {className: "absolute inset-l-0 ml-4 p-4 text-purple-400 font-weight-700"},
-         "more"],
-        ["div", {className: "absolute inset-r-0 mr-4 p-4 bg-purple-400 text-gray-100 font-weight-700 shadow-md"},
-         "enter"]]]);
+    return (
+      <div className={STYLES.container}>
+        <div className="relative mb-8">
+          <input className={STYLES.input + "pl-8"} type="number" />
+          <div className="absolute inset-y-0 inset-l-0 ml-2 opacity-20 text-lg flex justify-center items-center">$</div>
+        </div>
+        <div className="mb-8">
+          <input className={STYLES.input} type="text" placeholder="description" />
+        </div>
+        <div className="flex relative justify-center items-center p-4 mt-8">
+          {NBSP}
+          <div className="absolute inset-l-0 ml-4 p-4 text-purple-400 font-weight-700">
+            more
+          </div>
+          <div className="absolute inset-r-0 ml-4 p-4 bg-purple-400 text-gray-100 font-weight-700 shadow-md">
+            enter
+          </div>
+        </div>
+      </div>
+    );
   }
 };
 
 const RecentEntriesCard = {
   view: function RecentEntriesCard_view() {
-    return htr(
-      ["div", {className: STYLES.container},
-       ["div", {className: STYLES.container_header + "text-green-400"},
-        "recent entries"],
 
-       ["div",
-        {className: "grid",
-         style: {gridTemplateColumns: "3fr 1fr"}},
-        ["div", {className: "border-none border-b border-gray-300 p-2 ml-2"}, "chipotle"],
-        ["div", {className: "border-none border-b border-gray-300 p-2 mr-2"}, "$12.29"],
-        ["div", {className: "border-none border-b border-gray-300 p-2 ml-2"}, "chipotle"],
-        ["div", {className: "border-none border-b border-gray-300 p-2 mr-2"}, "$12.29"],
-        ["div", {className: "border-none border-b border-gray-300 p-2 ml-2"}, "chipotle"],
-        ["div", {className: "border-none border-b border-gray-300 p-2 mr-2"}, "$12.29"]
-        ,
-        ["div", {className: "border-none border-b border-gray-300 p-2 ml-2"}, "chipotle"],
-        ["div", {className: "border-none border-b border-gray-300 p-2 mr-2"}, "$12.29"]
-       ],
+    return (
+      <div className={STYLES.container}>
+        <div className={STYLES.container_header + "text-green-400"}>
+          recent entries
+        </div>
+        <div className="grid" style={{gridTemplateColumns: "3fr 1fr"}}>
+          <div className="border-none border-b border-gray-300 p-2 ml-2">chipotle</div>
+          <div className="border-none border-b border-gray-300 p-2 mr-2">$12.29</div>
 
-       ["div", {className: "flex mt-2 justify-center items-center"},
-        ["div", {className: "p-4 text-purple-400 font-weight-700"},
-         "more"]
-       ]
+          <div className="border-none border-b border-gray-300 p-2 ml-2">chipotle</div>
+          <div className="border-none border-b border-gray-300 p-2 mr-2">$12.29</div>
 
-      ]
+          <div className="border-none border-b border-gray-300 p-2 ml-2">chipotle</div>
+          <div className="border-none border-b border-gray-300 p-2 mr-2">$12.29</div>
+
+          <div className="border-none border-b border-gray-300 p-2 ml-2">chipotle</div>
+          <div className="border-none border-b border-gray-300 p-2 mr-2">$12.29</div>
+        </div>
+        <div className="flex mt-2 justify-center items-center">
+          <div className="p-4 text-purple-400 font-weight-700">more</div>
+        </div>
+      </div>
     );
-    
   }
 }
 ;
 
 const App = {
   view: function App_view() {
-    return htr(
-      ["div", {className: "h-100 bg-gray-100 text-rg font-weight-400"},
-       ["div", {className: STYLES.header},
-        "pinch"],
-
-       [NewEntryCard],
-
-       [RecentEntriesCard]
-       /*
-         ["div", {className: STYLES.container},
-         "This is some content on a light card."
-         ],
-         ["div", {className: STYLES.container},
-         ["div", {className: STYLES.container_header}, "A Header"],
-         LOREM_IPSUM],
-         ["div", {className: STYLES.corner_button}, "+"]
-       */
-      ])
+    return (
+      <div className="h-100 bg-gray-100 text-rg font-weight-400">
+        <div className={STYLES.header}>pinch</div>
+        <NewEntryCard />
+        <RecentEntriesCard />
+      </div>);
   }
 }
 
