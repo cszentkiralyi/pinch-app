@@ -3,7 +3,7 @@ const Ledger = {
 
   populate: () => {
     let newEntries = [], i;
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 10; i++) {
       newEntries.push({
         date: Date.now(),
         desc: "chipotle",
