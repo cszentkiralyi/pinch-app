@@ -291,7 +291,3 @@ input[type="date"]:focus {
 .focus\:border-purple-300:focus { border-color: #d853ea }
 .focus\:border-purple-200:focus { border-color: #e48bf0 }
 .focus\:border-purple-100:focus { border-color: #efbbf5 }
-
-.btn {
-  composes: p-4 font-weight-700;
-}
