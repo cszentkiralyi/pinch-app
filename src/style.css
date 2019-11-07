@@ -136,6 +136,7 @@ input[type="date"]:focus {
 
 .border { border-width: 1px; border-style: solid }
 .border-none { border-width: 0px }
+.border-y { border-bottom-width: 1px; border-top-width: 1px; border-style: solid }
 .border-b { border-bottom-width: 1px; border-style: solid }
 .border-0 { border-width: 0 }
 

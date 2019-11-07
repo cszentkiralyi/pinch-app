@@ -66,10 +66,20 @@ class MainContent {
   }
 }
 
+class Card {
+  view(vnode) {
+    return (
+      <div className="p-4 mb-8 bg-white text-black shadow border-none relative">
+        {vnode.children}
+      </div>
+    );
+  }
+}
+
 const NewEntryCard = {
   view: function NewEntryCard_view() {
     return (
-      <div className={STYLES.container}>
+      <Card>
         <div className="relative mb-8">
           <input className={STYLES.input + "w-100 pl-8"} type="number" />
           <div className="absolute inset-y-0 inset-l-0 ml-2 opacity-20 text-lg flex justify-center items-center">$</div>
@@ -81,15 +91,15 @@ const NewEntryCard = {
         </div>
         <div className="flex relative justify-center items-center p-4 mt-8">
           {NBSP}
-          <a className={STYLES.button_alt + "block absolute inset-l-0 ml-4"}
-            href="#!/entry">
+          <a className={STYLES.button_alt + "block absolute inset-l-0"}
+             href="#!/entry">
             more
           </a>
-          <div className={STYLES.button_primary + "absolute inset-r-0 ml-4"}>
+          <div className={STYLES.button_primary + "absolute inset-r-0"}>
             enter
           </div>
         </div>
-      </div>
+      </Card>
     );
   }
 };
@@ -98,7 +108,7 @@ const RecentEntriesCard = {
   view: function RecentEntriesCard_view(vnode) {
     let { list } = vnode.attrs;
     return (
-      <div className={STYLES.container}>
+      <Card>
         <div className={STYLES.container_header + "text-green-600"}>
           recent entries
         </div>
@@ -113,7 +123,7 @@ const RecentEntriesCard = {
         <div className="flex mt-2 justify-center items-center">
           <div className={STYLES.button_alt}>more</div>
         </div>
-      </div>
+      </Card>
     );
   }
 };
