@@ -11,10 +11,6 @@ const NBSP = "\u00a0";
 const $ = (sel, node) => (node || document).querySelector(sel);
 
 const STYLES = {
-  header: "flex bg-green-600 font-weight-600 text-lg text-white py-4 justify-center shadow border-none border-b border-green-700 relative ",
-  container_header: "text-lg pb-2 ",
-  container: "p-4 mb-8 bg-white text-black shadow border-1 border-gray-300 ",
-
   input: "block my-2 p-2 border-gray-400 focus:border-purple-400 text-lg ",
   button_primary: "p-4 bg-purple-400 text-white font-weight-700 shadow ",
   button_alt: "p-4 text-purple-400 font-weight-700 ",
@@ -25,15 +21,15 @@ const STYLES = {
 class Header {
   view(vnode) {
     return (
-      <div className={STYLES.header} id="header">
+      <div className="flex bg-green-600 font-weight-600 text-lg text-white py-4 justify-center shadow border-none border-b border-green-700 relative " id="header" style={{zIndex: 999}}>
         {vnode.attrs.left
-         ? (<div className="fixed inset-y-0 inset-l-0">
+         ? (<div className="absolute inset-y-0 inset-l-0 flex justify-center items-center">
           {vnode.attrs.left}
         </div>)
          : null}
         {vnode.children}
         {vnode.attrs.right
-         ? (<div className="fixed inset-y-0 inset-r-0">
+         ? (<div className="absolute inset-y-0 inset-r-0 flex justify-center items-center">
        {vnode.attrs.right}
      </div>)
          : null}
@@ -76,8 +72,8 @@ class Card {
   }
 }
 
-const NewEntryCard = {
-  view: function NewEntryCard_view() {
+class NewEntryCard {
+  view(vnode) {
     return (
       <Card>
         <div className="relative mb-8">
@@ -87,7 +83,9 @@ const NewEntryCard = {
         <div className="mb-8">
           <input
             className={STYLES.input + "w-100"}
-            type="text" placeholder="description" />
+            type="text"
+            autocapitalize="none"
+            placeholder="description" />
         </div>
         <div className="flex relative justify-center items-center p-4 mt-8">
           {NBSP}
@@ -102,10 +100,10 @@ const NewEntryCard = {
       </Card>
     );
   }
-};
+}
 
-const RecentEntriesCard = {
-  view: function RecentEntriesCard_view(vnode) {
+class RecentEntriesCard {
+  view(vnode) {
     let { list } = vnode.attrs;
     return (
       <Card>
@@ -126,7 +124,7 @@ const RecentEntriesCard = {
       </Card>
     );
   }
-};
+}
 
 const HomeScreen = {
   oninit: Ledger.populate,
@@ -134,7 +132,7 @@ const HomeScreen = {
     return (
       <MainContent header={<Header>pinch</Header>}>
         <NewEntryCard />
-        <RecentEntriesCard list={Ledger.entries.slice(0,10)}/>
+        <RecentEntriesCard list={Ledger.entries.slice(0,8)}/>
       </MainContent>
     );
   }
@@ -146,39 +144,37 @@ class EditScreen {
       <m.route.Link
         className="p-4 ml-2 text-white text-rg font-weight-700"
         href="/">
-        back
-      </m.route.Link>);
+        <i className="material-icons">arrow_back</i>
+      </m.route.Link>
+    );
+    let calIcon = "\ue916"; // date_range, but the ligatures acted fucky and was 240px wide for no reason
     return (
-      <div className="h-100 bg-gray-100 text-rg font-weight-400">
-        <Header left={btnBack} >back</Header>
-        <div className={STYLES.header}>
-          <a className="flex absolute inset-y-0 inset-l-0 justify-center items-center ml-2 p-4 text-white text-rg font-weight-700"
-             href="#!/">
-            back
-          </a>
-          pinch
-        </div>
-
-        <div className={STYLES.container}>
+      <MainContent header={<Header left={btnBack}>pinch</Header>}>
+        <Card>
           <div className="relative mb-8">
-            <input className={STYLES.input + "pl-8"} type="number" />
+            <input className={STYLES.input + "w-100 pl-8"} type="number" />
             <div className="absolute inset-y-0 inset-l-0 ml-2 opacity-20 text-lg flex justify-center items-center">$</div>
           </div>
           <div className="mb-8">
-            <input className={STYLES.input} type="text" placeholder="description" />
+            <input className={STYLES.input + "w-100"}
+                   type="text"
+                   autocapitalize="none"
+                   placeholder="description" />
           </div>
-          <div className="mb-8">
-            <input className={STYLES.input + "w-100 bg-white"} type="date" />
+          <div className="relative mb-8">
+            <input className={STYLES.input + "w-100 bg-white pl-8"} type="date" />
+            <div className="absolute inset-y-0 inset-l-0 m-0 opacity-20 text-lg flex justify-center items-center">
+              <i className="material-icons">{calIcon}</i>
+            </div>
           </div>
           <div className="flex relative justify-center items-center mt-8">
             <div className={STYLES.button_primary + "mx-4 flex-grow text-center"}>
               enter
             </div>
           </div>
-        </div>
-      </div>
-    )
-    
+        </Card>
+      </MainContent>
+    );
   }
 }
 
