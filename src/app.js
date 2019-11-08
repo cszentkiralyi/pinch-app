@@ -10,6 +10,33 @@ const NBSP = "\u00a0";
 
 const $ = (sel, node) => (node || document).querySelector(sel);
 
+const fmtDate = (d) => {
+  let now = Date.now(),
+      nowDay = now.getDate(),
+      nowMonth = now.getMonth(),
+      nowYear = now.getYear();
+  let day = d.getDate(),
+      month = d.getMonth(),
+      year = d.getYear();
+  let dayDiff = nowDay - day;
+  if (day === nowDay &&
+      month === nowMonth &&
+      year === nowYear) {
+    return "today";
+  } else if (year < nowYear) {
+    let yearDiff = nowYear - year;
+    return (yearDiff > 1) ? `${yearDiff} years ago` : "last year";
+  } else if (dayDiff === 1 && month === nowMonth) {
+    return "yesterday";
+  } else if (dayDiff < 7 && month === nowMonth) {
+    return "this week";
+  } else if (month === nowMonth) {
+    return "this month";
+  } else {
+    return "this year";
+  }
+}
+
 const STYLES = {
   input: "block my-2 p-2 border-gray-400 focus:border-purple-400 text-lg ",
   button_primary: "p-4 bg-purple-400 text-white font-weight-700 shadow ",
@@ -102,22 +129,41 @@ class NewEntryCard {
   }
 }
 
+class LedgerEntryList {
+  view(vnode) {
+    let { showDate, list } = vnode.attrs;
+    let gridTemplate = showDate
+        ? "3fr 1fr 1fr"
+        : "3fr 1fr";
+    return (
+      <div className="grid" style={{gridTemplateColumns: gridTemplate}}>
+        {list.map((entry, i) => {
+          let desc = (<div className="border-none border-b border-gray-300 p-2 ml-2">{entry.desc}</div>);
+          let amt = (<div className="border-none border-b border-gray-300 p-2 mr-2">${entry.amt.toFixed(2)}</div>);
+          let frag = showDate
+            ? [desc,
+               (<div className="border-none border-b border-gray-300 p-2 ml-2">{fmtDate(entry.date)}</div>),
+               amt]
+          : [desc, amt]
+          return m.fragment(null, frag);
+        })}
+      </div>
+    );
+  }
+}
+
 class RecentEntriesCard {
   view(vnode) {
     let { list } = vnode.attrs;
     return (
       <Card>
-        <div className={STYLES.container_header + "text-green-600"}>
+        <div className="text-lg text-green-600">
           recent entries
         </div>
-        <div className="grid" style={{gridTemplateColumns: "3fr 1fr"}}>
-          {list.map(({desc, amt}) => {
-            return m.fragment(null, [
-              (<div className="border-none border-b border-gray-300 p-2 ml-2">{desc}</div>),
-              (<div className="border-none border-b border-gray-300 p-2 mr-2">${amt.toFixed(2)}</div>)
-            ]);
-          })}
-        </div>
+        <LedgerEntryList
+          showDate={false}
+          list={list}
+        />
         <div className="flex mt-2 justify-center items-center">
           <div className={STYLES.button_alt}>more</div>
         </div>
