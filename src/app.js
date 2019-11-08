@@ -139,7 +139,7 @@ class LedgerEntryList {
       <div className="grid" style={{gridTemplateColumns: gridTemplate}}>
         {list.map((entry, i) => {
           let desc = (<div className="border-none border-b border-gray-300 p-2 ml-2">{entry.desc}</div>);
-          let amt = (<div className="border-none border-b border-gray-300 p-2 mr-2">${entry.amt.toFixed(2)}</div>);
+          let amt = (<div className="border-none border-b border-gray-300 p-2 mx-2">${entry.amt.toFixed(2)}</div>);
           let frag = showDate
             ? [desc,
                (<div className="border-none border-b border-gray-300 p-2 ml-2">{fmtDate(entry.date)}</div>),
@@ -157,7 +157,7 @@ class RecentEntriesCard {
     let { list } = vnode.attrs;
     return (
       <Card>
-        <div className="text-lg text-green-600">
+        <div className="text-lg text-green-600 mb-4">
           recent entries
         </div>
         <LedgerEntryList
