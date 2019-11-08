@@ -100,17 +100,48 @@ class Card {
 }
 
 class NewEntryCard {
+  constructor() {
+    this.amtStr = "";
+  }
+
+  saveEntry() {
+    if (!this.amt) return;
+    let entry = {
+      date: Date.now(),
+      amt: this.amt,
+      desc: this.desc
+    };
+    Ledger.db().put(entry);
+  }
+
+  tryParseAmt() {
+    try {
+      let v = parseFloat(this.amtStr);
+      this.amt = v;
+      this.amtStr = null;
+    } catch (e) {
+      this.amt = null;
+    }
+  }
+
   view(vnode) {
     return (
       <Card>
         <div className="relative mb-8">
-          <input className={STYLES.input + "w-100 pl-8"} type="number" />
+          <input
+            className={STYLES.input + "w-100 pl-8"}
+            type="number"
+            value={this.amtStr || (this.amt && this.amt.toFixed(2)) || ""}
+            onchange={e => this.amtStr = e.target.value }
+            onblur={_ => this.tryParseAmt()}
+          />
           <div className="absolute inset-y-0 inset-l-0 ml-2 opacity-20 text-lg flex justify-center items-center">$</div>
         </div>
         <div className="mb-8">
           <input
             className={STYLES.input + "w-100"}
             type="text"
+            onchange={e => this.desc = e.target.value}
             autocapitalize="none"
             placeholder="description" />
         </div>
@@ -120,9 +151,11 @@ class NewEntryCard {
              href="#!/entry">
             more
           </a>
-          <div className={STYLES.button_primary + "absolute inset-r-0"}>
+          <button
+            className={STYLES.button_primary + "absolute inset-r-0"}
+            onclick={e => this.saveEntry()}>
             enter
-          </div>
+          </button>
         </div>
       </Card>
     );
@@ -144,7 +177,7 @@ class LedgerEntryList {
             ? [desc,
                (<div className="border-none border-b border-gray-300 p-2 ml-2">{fmtDate(entry.date)}</div>),
                amt]
-          : [desc, amt]
+            : [desc, amt];
           return m.fragment(null, frag);
         })}
       </div>
@@ -165,7 +198,11 @@ class RecentEntriesCard {
           list={list}
         />
         <div className="flex mt-2 justify-center items-center">
-          <div className={STYLES.button_alt}>more</div>
+          <m.route.Link
+            className={STYLES.button_alt}
+            href="/ledger" >
+            more
+          </m.route.Link>
         </div>
       </Card>
     );
@@ -173,16 +210,16 @@ class RecentEntriesCard {
 }
 
 const HomeScreen = {
-  oninit: Ledger.populate,
+  //oninit: () => Ledger.populate(),
   view: function HomeScreen_view() {
     return (
       <MainContent header={<Header>pinch</Header>}>
         <NewEntryCard />
-        <RecentEntriesCard list={Ledger.entries.slice(0,8)}/>
+        <RecentEntriesCard list={Ledger.recent.slice(0,8)}/>
       </MainContent>
     );
   }
-}
+};
 
 class EditScreen {
   view() {
@@ -224,8 +261,36 @@ class EditScreen {
   }
 }
 
+class LedgerScreen {
+  constructor() {
+    this.entries = [];
+    Ledger.all().then(arr => this.entries = arr).then(_ => m.redraw());
+  }
+
+  view() {
+    let btnBack = (
+      <m.route.Link
+        className="p-4 ml-2 text-white text-rg font-weight-700"
+        href="/">
+        <i className="material-icons">arrow_back</i>
+      </m.route.Link>
+    );
+    return (
+      <MainContent header={<Header left={btnBack}>pinch</Header>}>
+        <Card>
+          <LedgerEntryList
+            showDate={false}
+            list={this.entries}
+          />
+        </Card>
+      </MainContent>
+    );
+  }
+}
+
 m.route($("#app-container"), "/", {
   "/": HomeScreen,
+  "/ledger": LedgerScreen,
   "/entry": EditScreen,
   "/entry/:id": EditScreen
 });

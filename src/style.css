@@ -30,6 +30,10 @@ input[type="date"]:focus {
   outline: none;
 }
 
+button {
+  border: none;
+}
+
 
 .noselect { user-select: none }
 
